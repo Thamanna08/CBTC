@@ -1,0 +1,100 @@
+import java.util.*;
+class Account {
+    int accountNumber;
+    String accountHolderName;
+    double balance;
+    public Account(int accountNumber, String accountHolderName, double balance) {
+        this.accountNumber = accountNumber;
+        this.accountHolderName = accountHolderName;
+        this.balance = balance;
+    }
+}
+public class BankingSystem {
+    Map<Integer, Account> accounts = new HashMap<>();
+    public void createAccount(int accountNumber, String accountHolderName, double initialBalance) {
+        accounts.put(accountNumber, new Account(accountNumber, accountHolderName, initialBalance));
+    }
+    public void deposit(int accountNumber, double amount) {
+        if (accounts.containsKey(accountNumber)) {
+            Account account = accounts.get(accountNumber);
+            account.balance += amount;
+            System.out.println("Deposit successful. New balance: " + account.balance);
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+    public void withdraw(int accountNumber, double amount) {
+        if (accounts.containsKey(accountNumber)) {
+            Account account = accounts.get(accountNumber);
+            if (account.balance >= amount) {
+                account.balance -= amount;
+                System.out.println("Withdrawal successful. New balance: " + account.balance);
+            } else {
+                System.out.println("Insufficient balance.");
+            }
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+    public void checkBalance(int accountNumber) {
+        if (accounts.containsKey(accountNumber)) {
+            Account account = accounts.get(accountNumber);
+            System.out.println("Account balance: " + account.balance);
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+    public static void main(String[] args) {
+        BankingSystem bankingSystem = new BankingSystem();
+        Scanner s = new Scanner(System.in);
+        while (true) {
+            System.out.println("1. Create Account");
+            System.out.println("2. Deposit");
+            System.out.println("3. Withdraw");
+            System.out.println("4. Check Balance");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
+            int option = s.nextInt();
+            s.nextLine(); // Consume newline left-over
+            switch (option) {
+                case 1:
+                    System.out.print("Enter account number: ");
+                    int accountNumber = s.nextInt();
+                    s.nextLine(); // Consume newline left-over
+                    System.out.print("Enter account holder name: ");
+                    String accountHolderName = s.nextLine();
+                    System.out.print("Enter initial balance: ");
+                    double initialBalance = s.nextDouble();
+                    bankingSystem.createAccount(accountNumber, accountHolderName, initialBalance);
+                    break;
+                case 2:
+                    System.out.print("Enter account number: ");
+                    accountNumber = s.nextInt();
+                    s.nextLine(); // Consume newline left-over
+                    System.out.print("Enter deposit amount: ");
+                    double amount = s.nextDouble();
+                    bankingSystem.deposit(accountNumber, amount);
+                    break;
+                case 3:
+                    System.out.print("Enter account number: ");
+                    accountNumber = s.nextInt();
+                    s.nextLine(); // Consume newline left-over
+                    System.out.print("Enter withdrawal amount: ");
+                    amount = s.nextDouble();
+                    bankingSystem.withdraw(accountNumber, amount);
+                    break;
+                case 4:
+                    System.out.print("Enter account number: ");
+                    accountNumber = s.nextInt();
+                    bankingSystem.checkBalance(accountNumber);
+                    break;
+                case 5:
+                    System.out.println("Thanks for using our service.");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid option.");
+            }
+        }
+    }
+}
